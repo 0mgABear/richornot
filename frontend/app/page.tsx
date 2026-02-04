@@ -146,10 +146,6 @@ export default function Home() {
             </div>
           )}
         </div>
-
-        <div className="mt-6 text-xs text-white/35">
-          Backend: <span className="text-white/50">http://127.0.0.1:8000</span>
-        </div>
       </div>
     </main>
   );
