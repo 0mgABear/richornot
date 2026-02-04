@@ -22,6 +22,13 @@ export default function Home() {
   const [result, setResult] = useState<ApiResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
+
+  if (!API_BASE) {
+    setError("Backend not configured");
+    setLoading(false);
+    return;
+  }
 
   const trimmed = postal.trim();
 
@@ -43,7 +50,7 @@ export default function Home() {
     setLoading(true);
     try {
       const r = await fetch(
-        `http://127.0.0.1:8000/?postal=${encodeURIComponent(trimmed)}`,
+        `${API_BASE}/?postal=${encodeURIComponent(trimmed)}`,
       );
 
       const j = await r.json().catch(() => null);
