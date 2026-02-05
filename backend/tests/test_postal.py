@@ -57,10 +57,10 @@ def test_classifier_school_is_non_residential():
     assert classify_postal(SCHOOL_JSON) == "NON_RESIDENTIAL"
 
 def test_classifier_condo_is_residential():
-    assert classify_postal(CONDO_JSON) == "RESIDENTIAL"
+    assert classify_postal(CONDO_JSON) == "PRIVATE"
 
 def test_classifier_hdb_is_residential():
-    assert classify_postal(HDB_JSON) == "RESIDENTIAL"
+    assert classify_postal(HDB_JSON) == "PUBLIC"
 
 def test_classifier_no_results():
     assert classify_postal(NO_RESULTS_JSON) == "NOT_FOUND"

@@ -1,29 +1,30 @@
-def classify_postal(data):
-    results = data.get("results") or []
-    found = data.get("found") or 0
+# services/classifier.py
 
-    if found <= 0 or len(results) == 0:
+_NON_RES_KWS = [
+    "TOWER", "OFFICE", "MALL", "PLAZA", "CENTRE", "CENTER", "COMPLEX",
+    "HOTEL", "HOSPITAL", "CLINIC", "SCHOOL", "COLLEGE", "UNIVERSITY",
+    "MRT", "STATION", "INTERCHANGE", "DEPOT",
+    "WAREHOUSE", "FACTORY", "INDUSTRIAL", "WORKSHOP",
+    "TEMPLE", "CHURCH", "MOSQUE", "CONSULATE",
+]
+
+def classify_postal(data: dict) -> str:
+    results = data.get("results") or []
+    if not results:
         return "NOT_FOUND"
 
-    NON_RES_KEYWORDS = [
-        "SCHOOL", "COLLEGE", "UNIVERSITY", "INSTITUTE", "POLYTECHNIC",
-        "CAMPUS", "ACADEMY", "KINDERGARTEN",
-        "CONSULATE", "EMBASSY",
-        "TOWER", "OFFICE", "BUILDING", "PLAZA", "MALL", "COMPLEX",
-        "HOSPITAL", "CLINIC", "CHURCH", "TEMPLE", "MOSQUE", "MRT", "LRT"
-    ]
+    first = results[0] or {}
+    building = (first.get("BUILDING") or "").upper().strip()
+    address = (first.get("ADDRESS") or "").upper().strip()
 
-    # If any result looks non-residential → NON_RESIDENTIAL
-    for r in results:
-        b = (r.get("BUILDING") or "").upper()
-        a = (r.get("ADDRESS") or "").upper()
-        for k in NON_RES_KEYWORDS:
-            if k in b or k in a:
-                return "NON_RESIDENTIAL"
+    hay = f"{building} {address}"
+    if any(k in hay for k in _NON_RES_KWS):
+        return "NON_RESIDENTIAL"
 
-    for r in results:
-        building = (r.get("BUILDING") or "").strip().upper()
-        if building == "NIL":
-            return "PUBLIC"
+    if building and building != "NIL":
+        return "PRIVATE"
+
+    if building == "NIL":
+        return "PUBLIC"
 
     return "PRIVATE"

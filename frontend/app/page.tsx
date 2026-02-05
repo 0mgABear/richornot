@@ -2,10 +2,18 @@
 
 import { useMemo, useState } from "react";
 
+type HdbEstimate = {
+  month: string;
+  resale_price: string;
+  flat_type: string;
+  town: string;
+};
+
 type ApiResult = {
   postal: string;
   address: string | null;
   type: "PUBLIC" | "PRIVATE" | "NON_RESIDENTIAL" | "NOT_FOUND";
+  estimate: HdbEstimate | null;
 };
 
 function Spinner() {
@@ -15,6 +23,12 @@ function Spinner() {
       className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white"
     />
   );
+}
+
+function formatMoney(v: number | string) {
+  const n = Number(v);
+  if (!Number.isFinite(n)) return "-";
+  return n.toLocaleString("en-SG");
 }
 
 export default function Home() {
@@ -74,7 +88,8 @@ export default function Home() {
         <div className="mb-6">
           <h1 className="text-3xl font-semibold tracking-tight">Rich or Not</h1>
           <p className="mt-2 text-sm text-white/60">
-            Enter a Singapore postal code to classify property type.
+            Enter a Singapore postal code to find out how "rich" your potential
+            client is!
           </p>
         </div>
 
@@ -146,6 +161,38 @@ export default function Home() {
             </div>
           )}
         </div>
+        {result?.estimate?.resale_price && (
+          <div
+            style={{
+              marginTop: 20,
+              padding: 18,
+              borderRadius: 14,
+              background: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              textAlign: "center",
+            }}
+          >
+            <span
+              style={{
+                color: "#eaeaea",
+                fontWeight: 700,
+                fontSize: 18,
+                marginRight: 8,
+              }}
+            >
+              Client is worth at least
+            </span>
+            <span
+              style={{
+                color: "#69db7c",
+                fontWeight: 800,
+                fontSize: 24,
+              }}
+            >
+              ${formatMoney(result.estimate.resale_price)}
+            </span>
+          </div>
+        )}
       </div>
     </main>
   );
