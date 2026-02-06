@@ -42,3 +42,11 @@ For private properties, another alternative URA [dataset](https://eservice.ura.g
 ## Key Limitations:
 
 1. Private properties may not be transacted as regularly, so the net-worth of the client will not be shown in the final UI display, due to a lack of data in the URA database.
+
+# Concluding Words:
+
+This was a project initially spurred by a groupmate in my traineeship program, and he was in another financial institution. He lamented how there was no such solution, and I decided to do this as a bet (at the cost of lunch). I won the bet and a free lunch but still decided to develop this further.
+
+Sometimes project ideas can come from the most random of places, but never let that stop you!
+
+This is proudly a @commonertech product.
